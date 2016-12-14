@@ -1,0 +1,49 @@
+<html>
+<header>
+    <title>Collec entropy from user</title>
+    <style>
+        .canvas {
+            border: 1px solid black;
+            padding: 2px;
+            min-height: 10px;
+        }
+        
+        .data {
+            width: 500px;
+            border: 1px solid black;
+            font-size: 12pt;
+            padding: 2px;
+            min-height: 24px;
+        }
+    </style>
+</header>
+<body>
+    <script type="text/javascript" src="entropy-collector.js"></script>
+    <canvas id="canvas" width="500" height="500" class="canvas"></canvas>
+    <div id="content" class="data"></div>
+    <div id="counter" class="data"></div>
+    <script type="text/javascript">
+        var theCollector = new EntropyCollector({
+            maxRound: 8,
+            maxBytes: 32,
+            canvasId: 'canvas'
+        });
+        theCollector.start();
+        theCollector.onChange(function (a, b, c) {
+            document.getElementById('content').innerHTML = a;
+            document.getElementById('counter').innerHTML = b + '/' + c;
+        });
+        theCollector.onDone(function (a, b, c) {
+            alert('The final result is: ' + a);
+        });
+        var reset = function(){
+            theCollector.reset(function(){
+                document.getElementById('content').innerHTML = '0x';
+                document.getElementById('counter').innerHTML = '0/0';
+            });
+        }
+    </script>
+    <button onclick="reset();">Reset</button>
+</body>
+
+</html>
